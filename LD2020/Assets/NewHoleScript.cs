@@ -9,17 +9,24 @@ public class NewHoleScript : MonoBehaviour
     bool hasBall = false;
     float timer = -1;
     private MusicPlayer _musicPlayer;
-    Renderer myRenderer;
+    List<Renderer> myRenderer;
     public Material hasBallMat;
     public Material noBallMat;
     public Material hasPlayerMat;
     float x = 0;
     Vector3 startingPos;
     // Start is called before the first frame update
+
+    public List<GameObject> hoop;
     void Start()
     {
         _musicPlayer = GameObject.FindWithTag("musicPlayer").GetComponent<MusicPlayer>();
-        myRenderer = GetComponent<Renderer>();
+        myRenderer = new List<Renderer>();
+        foreach (GameObject GO in hoop)
+        {
+            myRenderer.Add(GO.GetComponent<Renderer>());
+        }
+        
     }
 
     // Update is called once per frame
@@ -54,9 +61,12 @@ public class NewHoleScript : MonoBehaviour
         if (other.gameObject.tag == "sheep")
         {
             _musicPlayer.PlaySheepEnterHoleSound();
-            Debug.Log("gay af");
             hasBall = true;
-            myRenderer.material = hasBallMat;
+            foreach (Renderer r in myRenderer)
+            {
+                r.material = hasBallMat;
+            }
+            
 
         }
 
@@ -65,7 +75,10 @@ public class NewHoleScript : MonoBehaviour
             //other.GetComponent<Rigidbody>().AddForce(new Vector3(0, -1000, 0));
             //other.enabled = false;
             timer = 2f;
-            myRenderer.material = hasPlayerMat;
+            foreach (Renderer r in myRenderer)
+            {
+                r.material = hasPlayerMat;
+            }
         }
 
     }
@@ -76,7 +89,10 @@ public class NewHoleScript : MonoBehaviour
         {
             _musicPlayer.PlaySheepExitHoleSound();
             hasBall = false;
-            myRenderer.material = noBallMat;
+            foreach (Renderer r in myRenderer)
+            {
+                r.material = noBallMat;
+            }
         }
     }
 

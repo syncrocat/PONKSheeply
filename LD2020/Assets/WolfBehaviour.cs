@@ -17,7 +17,7 @@ public class WolfBehaviour : MonoBehaviour, IGrowlRangeHandler, IChaseRangeHandl
     public const int MoveForce = 200;
     public double chaseAnimationSpeed = 0.1;
     private List<GameObject> targetsInGrowlRange;
-    private WolfState state;
+    public WolfState state;
     GameObject chaseTarget;
     public float speed;
     public readonly float maxGrowlTime = 1; // Default 2 seconds of growl time
@@ -228,12 +228,15 @@ public class WolfBehaviour : MonoBehaviour, IGrowlRangeHandler, IChaseRangeHandl
                 break;
             case WolfState.Chase:
                 Debug.Log("Left chase range");
-                if (args.gameObject == chaseTarget)
+                if (!optionalPreLoadedTarget)
                 {
-                    Debug.Log("No longer chasing target. Alert Mode");
-                    EnterAlertState();
+                    if (args.gameObject == chaseTarget)
+                    {
+                        Debug.Log("No longer chasing target. Alert Mode");
+                        EnterAlertState();
+                    }
                 }
-
+            
                 break;
             case WolfState.Alert:
                 break;
